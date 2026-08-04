@@ -1,8 +1,7 @@
 {
   "name": "SciLifeLab Serve Gradio template",
 
-  // Pin the Debian release. The floating :3.12 tag moved to Trixie,
-  // which broke the Moby-based Docker-in-Docker feature.
+  // Pin the Debian release.
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
 
   "features": {

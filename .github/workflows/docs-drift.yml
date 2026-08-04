@@ -1,9 +1,9 @@
 name: Docs drift
 
-# The SciLifeLab Serve platform is in beta, so the numbers hard-coded in this
+# The numbers hard-coded in this
 # template can move. This job re-reads the canonical documentation once a month
 # and opens an issue if an invariant has disappeared. It turns "will this go
-# stale" from a hope into a test.
+# stale" into a test.
 
 on:
   schedule:

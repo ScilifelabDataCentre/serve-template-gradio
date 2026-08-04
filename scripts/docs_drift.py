@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Check that the invariants baked into this template still appear in the docs.
 
-SciLifeLab Serve is in beta and the documentation says so. Rather than hoping
-this template stays correct, assert it: fetch the canonical pages and look for
+Rather than hoping this template stays correct, assert it: fetch the canonical pages and look for
 the strings this repository depends on.
 
     python scripts/docs_drift.py
