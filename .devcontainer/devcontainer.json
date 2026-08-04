@@ -1,24 +1,35 @@
 {
   "name": "SciLifeLab Serve Gradio template",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+
+  // Pin the Debian release. The floating :3.12 tag moved to Trixie,
+  // which broke the Moby-based Docker-in-Docker feature.
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+
   "features": {
-    // Docker inside the container, so you can build and run the image without
-    // installing Docker Desktop. This is the whole point of the devcontainer:
-    // the Serve docs open with "install Docker Desktop", which is a hard stop
-    // on a managed university laptop.
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    // Current official major version of the Docker-in-Docker feature.
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
   },
-  "postCreateCommand": "pip install --user -r app/requirements.txt pytest",
-  "forwardPorts": [7860],
+
+  "remoteUser": "vscode",
+
+  "postCreateCommand": "python -m pip install --user -r app/requirements.txt && python -m pip install --user pytest",
+
+  "forwardPorts": [
+    7860
+  ],
+
   "portsAttributes": {
-    "7860": { "label": "Gradio app", "onAutoForward": "notify" }
+    "7860": {
+      "label": "Gradio app",
+      "onAutoForward": "notify"
+    }
   },
+
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
-        "GitHub.copilot",
-        "ms-azuretools.vscode-docker"
+        "GitHub.copilot"
       ]
     }
   }
