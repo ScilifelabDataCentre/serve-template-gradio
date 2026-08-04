@@ -1,0 +1,15 @@
+# Templates with stale pins are worse than no templates, so let Dependabot do
+# the remembering. Grouped and monthly, to keep the noise low.
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /app
+    schedule:
+      interval: monthly
+    groups:
+      python-dependencies:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

@@ -1,0 +1,43 @@
+name: Docs drift
+
+# The SciLifeLab Serve platform is in beta, so the numbers hard-coded in this
+# template can move. This job re-reads the canonical documentation once a month
+# and opens an issue if an invariant has disappeared. It turns "will this go
+# stale" from a hope into a test.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the first of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compare the template against the live documentation
+        id: drift
+        run: python scripts/docs_drift.py --report drift.md
+
+      - name: Open an issue when something moved
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Docs drift detected on $(date -u +%Y-%m-%d)"
+          body="$(cat drift.md 2>/dev/null || echo 'The drift check failed. See the workflow logs.')"
+          existing=$(gh issue list --label docs-drift --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label docs-drift
+          fi

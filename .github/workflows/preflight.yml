@@ -1,0 +1,54 @@
+name: Preflight
+
+# Runs the deployment contract checks and the tests. Also builds the image
+# without pushing it, so a broken Dockerfile fails here rather than after a
+# researcher has already filled in the Serve form.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_call:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the SciLifeLab Serve deployment contract
+        run: python scripts/preflight.py --strict
+
+      - name: Install dependencies
+        run: pip install -r app/requirements.txt pytest
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Build the image for amd64, without pushing
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          platforms: linux/amd64
+          tags: serve-preflight:ci
+
+      - name: Start the container and check that it answers on 7860
+        run: |
+          docker run -d --name preflight -p 7860:7860 serve-preflight:ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:7860/ > /dev/null; then
+              echo "App responded after ${attempt}s"
+              docker rm -f preflight
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "App did not respond on port 7860. Container logs:"
+          docker logs preflight
+          docker rm -f preflight
+          exit 1
