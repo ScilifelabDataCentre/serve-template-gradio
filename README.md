@@ -265,47 +265,6 @@ result would deploy on Serve.
 
 ---
 
-## Notes for reviewers
-
-**Verified against the live docs on 2026-08-04.** Port 7860, `useradd -m -u 1000`,
-`GRADIO_SERVER_NAME`, `GRADIO_TEMP_DIR`, `CMD ["python", "main.py"]`, the 100 MB
-upload limit, the 5 GB temp ceiling, `--platform linux/amd64`, unique tags, and
-the ports 3000 to 9999 range all come from the Gradio and Other app types pages.
-
-**Three deliberate departures from the docs' example Dockerfile:**
-
-1. **No `build-essential` or `software-properties-common`.** Gradio and pandas
-   ship prebuilt wheels, so the packages are dead weight in an image Serve
-   re-pulls on a schedule.
-2. **A Python `HEALTHCHECK`, not curl.** The Streamlit page's example calls curl
-   on `python:3.10.0-slim`, which contains no curl, so that healthcheck can only
-   fail. `preflight.py` refuses that pattern.
-3. **`GRADIO_ANALYTICS_ENABLED=False`.** Gradio otherwise makes a version-check
-   call on startup. Worth switching off on a research platform, and it is the
-   direct equivalent of the `--browser.gatherUsageStats=false` flag the Streamlit
-   docs already recommend.
-
-**Two things the tests found while this was being built**, both worth keeping in
-mind when the pattern is forked to Streamlit, Shiny and Dash:
-
-- The secret scanner silently skipped every file when the repository sat under a
-  path containing one of its skip-directory names, `/tmp` being the obvious case.
-  A validator that passes everything is worse than no validator, which is why
-  `tests/test_preflight.py` runs the checks against deliberately broken copies of
-  the repository rather than only against the good one.
-- Grepping the source for `share=True` flagged the docstring that warns against
-  it. Hence the AST-based checks and the comment-stripped Dockerfile view.
-
-**`docs_drift.py` needs outbound network access.** It runs in GitHub Actions.
-When the Serve docs grow Markdown twins, point `SOURCES` at the `.md` URLs and
-delete the HTML-unwrapping step.
-
-**Open question inherited from the docs:** the Dash page's example Dockerfile runs
-as root, while the Other app types page requires UID 1000. That has to be settled
-before `serve-template-dash` can be written. It does not affect this template.
-
----
-
 ## Licence
 
 MIT. See [LICENSE](LICENSE). The demo app and the tooling are yours to strip out
