@@ -40,7 +40,7 @@ Log in at <https://serve.scilifelab.se>, open or create a project, then click
 | **Title** | your app's display name | Shown on the public Apps page |
 | **Description** | two or three sentences | Functions as the abstract for the app |
 | **Subjects and keywords** | pick a few | Used for discovery |
-| **Permissions** | `Public` or `Link` | **Not `Private` or `Project`:** there is a known bug with Gradio apps at those levels. `Link` is the right choice while a paper is under review |
+| **Permissions** | `Public` or `Link` or `Private` or `Project`| `Link` is the right choice while a paper is under review |
 | **Creators** | you, and co-authors | ORCID lookup fills the details in |
 | **Language of the application interface** | usually English | |
 | **Funding sources** | funder and grant number | |
