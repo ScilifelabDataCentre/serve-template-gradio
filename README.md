@@ -48,9 +48,10 @@ pip install -r app/requirements.txt
 python app/main.py            # http://127.0.0.1:7860
 ```
 
-No Docker on your laptop? Open the repository in a **GitHub Codespace** instead.
-The included devcontainer gives you Python and Docker with nothing to install,
-which is the usual blocker for anyone on a managed university machine.
+No Docker on your laptop? Open the repository in a [**GitHub Codespace**](https://github.com/features/codespaces) instead.
+The included devcontainer gives you Python and Docker with nothing to install. [GitHub will provide users in the free plan 120 core hours or 60 hours of run time on a 2 core codespace, plus 15 GB of storage each month.](https://github.com/features/codespaces)
+
+
 
 ### 3. Make it yours
 
@@ -274,4 +275,4 @@ and replace.
 
 - Serve documentation: <https://serve.scilifelab.se/docs/>
 - Gradio guide: <https://serve.scilifelab.se/docs/application-hosting/gradio/>
-- The Serve team offers free individual consultations: serve@scilifelab.se
+- The Serve team offers free individual consultations to life science researchers affiliated with a Swedish research institute: serve@scilifelab.se
