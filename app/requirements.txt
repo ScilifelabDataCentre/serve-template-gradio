@@ -1,5 +1,5 @@
 # Pin every dependency with == so that the image you build today is the image
 # you can rebuild in a year. scripts/preflight.py enforces this.
 # Dependabot is configured to open PRs when these fall behind.
-gradio==6.22.0
-pandas==3.0.2
+gradio==6.28.0
+pandas==3.0.6
